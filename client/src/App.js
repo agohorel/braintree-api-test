@@ -8,6 +8,7 @@ function App() {
   const [token, setToken] = useState("");
   const [dropInInstance, setDropInInstance] = useState({});
   const [deviceData, setDeviceData] = useState({});
+  const [donationAmount, setDonationAmount] = useState("");
 
   useEffect(() => {
     axios
@@ -21,9 +22,14 @@ function App() {
     const { nonce } = await dropInInstance.requestPaymentMethod();
     const res = await axios.post("http://localhost:5000/donate", {
       nonce,
-      deviceData
+      deviceData,
+      donationAmount
     });
     console.log(res);
+  };
+
+  const handleChange = e => {
+    setDonationAmount(e.target.value);
   };
 
   useEffect(() => {
@@ -57,6 +63,15 @@ function App() {
   } else {
     return (
       <div className="App">
+        <form>
+          <label htmlFor="donation input">donation amount:</label>
+          <input
+            name="donation input"
+            type="text"
+            value={donationAmount}
+            onChange={handleChange}
+          ></input>
+        </form>
         <DropIn
           options={{ authorization: token }}
           onInstance={instance => setDropInInstance(instance)}

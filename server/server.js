@@ -33,11 +33,13 @@ server.get("/", (req, res) => {
 });
 
 server.post("/donate", (req, res) => {
-  const { nonce, deviceData } = req.body;
+  const { nonce, deviceData, donationAmount } = req.body;
+
+  console.log(donationAmount, String(donationAmount));
 
   gateway.transaction.sale(
     {
-      amount: "10.00",
+      amount: String(donationAmount),
       paymentMethodNonce: nonce,
       deviceData,
       options: {
