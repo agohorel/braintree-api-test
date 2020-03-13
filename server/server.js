@@ -6,7 +6,6 @@ const braintree = require("braintree");
 const axios = require("axios");
 
 const server = express();
-const port = 5000;
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
@@ -32,10 +31,8 @@ server.get("/", (req, res) => {
   });
 });
 
-server.post("/donate", (req, res) => {
+server.post("/donate", validateDonation, (req, res) => {
   const { nonce, deviceData, donationAmount } = req.body;
-
-  console.log(donationAmount, String(donationAmount));
 
   gateway.transaction.sale(
     {
@@ -56,4 +53,23 @@ server.post("/donate", (req, res) => {
   );
 });
 
-server.listen(port, () => console.log(`server listening on port ${port}`));
+function validateDonation(req, res, next) {
+  const { nonce, deviceData, donationAmount } = req.body;
+
+  if (!nonce) {
+    res
+      .status(500)
+      .json({ error: "Server error. Please wait a few seconds and again." });
+  } else if (!deviceData) {
+    res.status(500).json({
+      error:
+        "Your device could not be verified - please try again. If you run a script blocker, enable scripts from this domain and try again."
+    });
+  } else if (!donationAmount) {
+    res.status(400).json({ error: "Please provide a donation amount" });
+  } else {
+    next();
+  }
+}
+
+module.exports = server;

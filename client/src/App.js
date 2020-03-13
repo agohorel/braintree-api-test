@@ -76,7 +76,7 @@ function App() {
           options={{ authorization: token }}
           onInstance={instance => setDropInInstance(instance)}
         ></DropIn>
-        <button onClick={donate}>purchase</button>
+        <button onClick={donate}>donate</button>
       </div>
     );
   }
