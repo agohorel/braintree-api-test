@@ -33,8 +33,8 @@ server.get("/", (req, res) => {
 });
 
 server.post("/donate", (req, res) => {
-  const nonce = req.body.nonce;
-  console.log(nonce);
+  const { nonce, deviceData } = req.body;
+  console.log(nonce, deviceData);
   res.status(200).json({ msg: "received nonce" });
 });
 

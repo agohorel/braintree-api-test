@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import braintree from "braintree-web";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
 import "./App.css";
 
 function App() {
   const [token, setToken] = useState("");
-  const [bt, setBt] = useState({});
-  // let bt;
+  const [dropInInstance, setDropInInstance] = useState({});
+  const [deviceData, setDeviceData] = useState({});
 
   useEffect(() => {
     axios
@@ -17,10 +18,35 @@ function App() {
 
   const donate = async e => {
     e.preventDefault();
-    const { nonce } = await bt.requestPaymentMethod();
-    const res = await axios.post("http://localhost:5000/donate", { nonce });
+    const { nonce } = await dropInInstance.requestPaymentMethod();
+    const res = await axios.post("http://localhost:5000/donate", {
+      nonce,
+      deviceData
+    });
     console.log(res);
   };
+
+  useEffect(() => {
+    if (token) {
+      braintree.client
+        .create({
+          authorization: token
+        })
+        .then(function(clientInstance) {
+          return braintree.dataCollector
+            .create({
+              client: clientInstance,
+              paypal: true
+            })
+            .then(function(dataCollectorInstance) {
+              setDeviceData(dataCollectorInstance.deviceData);
+            });
+        })
+        .catch(function(err) {
+          console.error(err);
+        });
+    }
+  }, [token]);
 
   if (!token) {
     return (
@@ -33,7 +59,7 @@ function App() {
       <div className="App">
         <DropIn
           options={{ authorization: token }}
-          onInstance={instance => setBt(instance)}
+          onInstance={instance => setDropInInstance(instance)}
         ></DropIn>
         <button onClick={donate}>purchase</button>
       </div>

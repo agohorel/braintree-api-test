@@ -23,3 +23,14 @@ https://medium.com/@reginald.johnson/accepting-payments-in-a-react-native-app-pa
 https://medium.com/react-native-training/accepting-payments-in-a-react-native-app-part-3-c22828ecab13
 
 https://medium.com/react-native-training/accepting-payments-in-a-react-native-app-part-4-cb4f7c02c193
+
+
+# todo
+
+## frontend
+
+- add device info to transactions (improves fraud detection)
+    - https://developers.braintreepayments.com/guides/advanced-fraud-tools/device-data-collection/javascript/v3
+    - research GDPR implications
+
+## backend
