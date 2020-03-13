@@ -34,8 +34,24 @@ server.get("/", (req, res) => {
 
 server.post("/donate", (req, res) => {
   const { nonce, deviceData } = req.body;
-  console.log(nonce, deviceData);
-  res.status(200).json({ msg: "received nonce" });
+
+  gateway.transaction.sale(
+    {
+      amount: "10.00",
+      paymentMethodNonce: nonce,
+      deviceData,
+      options: {
+        submitForSettlement: true
+      }
+    },
+    (error, result) => {
+      if (!error) {
+        res.status(200).json({ msg: result });
+      } else {
+        res.status(500).json({ error });
+      }
+    }
+  );
 });
 
 server.listen(port, () => console.log(`server listening on port ${port}`));
