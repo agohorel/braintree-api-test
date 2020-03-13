@@ -22,13 +22,20 @@ server.use(
 );
 server.use(express.json());
 
-server.get("/", async (req, res) => {
-  await gateway.clientToken.generate((err, response) => {
+server.get("/", (req, res) => {
+  gateway.clientToken.generate((err, response) => {
     if (!err) {
-      console.log(response);
-      res.send(response.clientToken);
+      res.status(200).json(response.clientToken);
+    } else {
+      res.status(500).json({ error: "error fetching token" });
     }
   });
+});
+
+server.post("/donate", (req, res) => {
+  const nonce = req.body.nonce;
+  console.log(nonce);
+  res.status(200).json({ msg: "received nonce" });
 });
 
 server.listen(port, () => console.log(`server listening on port ${port}`));
