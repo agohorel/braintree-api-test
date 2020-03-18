@@ -13,12 +13,17 @@ const gateway = braintree.connect({
   privateKey: process.env.BRAINTREE_PRIVATE_KEY
 });
 
+// if you're getting blocked by CORS - add your local IP:PORT to the whitelist array
+// for react-native, this will be the IP:PORT assigned by Expo
+const whitelist = ["http://localhost:3000", "exp://192.168.1.14:19000"];
+
 server.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: whitelist,
     credentials: true
   })
 );
+
 server.use(express.json());
 
 server.get("/", (req, res) => {
