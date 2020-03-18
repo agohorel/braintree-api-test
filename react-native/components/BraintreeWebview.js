@@ -17,6 +17,9 @@ export const BraintreeWebview = ({ token }) => {
         originWhitelist={["*"]}
         injectedJavaScript={sendTokenToWebView}
         javaScriptEnabledAndroid={true}
+        onMessage={event => {
+          alert(event.nativeEvent.data);
+        }}
       />
     </View>
   );
