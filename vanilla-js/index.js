@@ -1,5 +1,5 @@
-const text = document.querySelector("#text");
 const button = document.querySelector("#submit-button");
+const input = document.querySelector("input");
 let token;
 
 createDropin();
@@ -33,8 +33,6 @@ function promisifyBraintree(options) {
 }
 
 async function setupBraintree(token) {
-  text.textContent = token.substring(0, 20) + "...";
-
   try {
     const dropin = await promisifyBraintree({
       authorization: token,
@@ -72,7 +70,7 @@ async function submitTransaction(payload) {
     body: JSON.stringify({
       nonce,
       deviceData: "someDeviceData",
-      donationAmount: "10.00"
+      donationAmount: String(input.value)
     })
   };
 

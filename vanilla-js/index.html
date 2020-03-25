@@ -4,9 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>braintree dropin test</title>
     <style>
-        body {
-          font-family: monospace;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+      }
 
       .container {
         width: 100%;
@@ -17,11 +19,23 @@
         align-items: center;
       }
 
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input {
+        border: 1px solid #aeaeae;
+        padding: 5px 8px;
+      }
+
       #submit-button {
         display: none;
         border-radius: 5px;
         background-color: #9c9c9c;
         padding: 5px 8px;
+        font-size: 16px;
       }
     </style>
     <script src="https://js.braintreegateway.com/web/dropin/1.22.1/js/dropin.min.js"></script>
@@ -29,11 +43,12 @@
   </head>
   <body>
     <div class="container">
+      <form action="">
+        <label for="donation-amount">Donation Amount:</label>
+        <input type="number" name="donation-amount" />
+      </form>
       <div id="dropin-container"></div>
-        <p>token value is:</p>
-        <p id="text"></p>
-        <button id="submit-button">Request payment method</button>
-      </div>
+      <button id="submit-button">Donate</button>
     </div>
     <script src="index.js"></script>
   </body>
