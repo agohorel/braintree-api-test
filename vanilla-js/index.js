@@ -36,7 +36,10 @@ async function setupBraintree(token) {
   try {
     const dropin = await promisifyBraintree({
       authorization: token,
-      container: "#dropin-container"
+      container: "#dropin-container",
+      paypal: {
+        flow: "vault"
+      }
     });
 
     setupEventListener(dropin);
