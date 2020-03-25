@@ -15,7 +15,7 @@ const gateway = braintree.connect({
 
 // if you're getting blocked by CORS - add your local IP:PORT to the whitelist array
 // for react-native, this will be the IP:PORT assigned by Expo
-const whitelist = ["http://localhost:3000", "exp://192.168.1.14:19000"];
+const whitelist = ["http://localhost:3000", "exp://192.168.1.14:19000", "http://127.0.0.1:5500"];
 
 server.use(
   cors({
@@ -38,6 +38,8 @@ server.get("/", (req, res) => {
 
 server.post("/donate", validateDonation, (req, res) => {
   const { nonce, deviceData, donationAmount } = req.body;
+
+  console.log(nonce, deviceData, donationAmount);
 
   gateway.transaction.sale(
     {
