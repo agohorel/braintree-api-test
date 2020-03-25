@@ -13,10 +13,10 @@ async function createDropin() {
   }
 }
 
-async function asyncFetch(url) {
+async function asyncFetch(url, options) {
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    const res = await fetch(url, options);
+    const data = res.json();
     return data;
   } catch (err) {
     return err;
@@ -55,7 +55,27 @@ function setupEventListener(dropinInstance) {
         console.error(err);
       } else {
         console.log(payload);
+        submitTransaction(payload);
       }
     });
   });
+}
+
+async function submitTransaction(payload) {
+  const { nonce } = payload;
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nonce,
+      deviceData: "someDeviceData",
+      donationAmount: "10.00"
+    })
+  };
+
+  const res = await asyncFetch("http://localhost:5000/donate", options);
+  console.log(res);
 }
