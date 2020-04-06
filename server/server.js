@@ -3,26 +3,16 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const braintree = require("braintree");
-const axios = require("axios");
 
 const server = express();
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
-  privateKey: process.env.BRAINTREE_PRIVATE_KEY
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 });
 
-// if you're getting blocked by CORS - add your local IP:PORT to the whitelist array
-// for react-native, this will be the IP:PORT assigned by Expo
-const whitelist = ["http://localhost:3000", "exp://192.168.1.14:19000", "http://127.0.0.1:5500"];
-
-server.use(
-  cors({
-    origin: whitelist,
-    credentials: true
-  })
-);
+server.use(cors());
 
 server.use(express.json());
 
@@ -47,8 +37,8 @@ server.post("/donate", validateDonation, (req, res) => {
       paymentMethodNonce: nonce,
       deviceData,
       options: {
-        submitForSettlement: true
-      }
+        submitForSettlement: true,
+      },
     },
     (error, result) => {
       if (!error) {
@@ -70,7 +60,7 @@ function validateDonation(req, res, next) {
   } else if (!deviceData) {
     res.status(500).json({
       error:
-        "Your device could not be verified - please try again. If you run a script blocker, enable scripts from this domain and try again."
+        "Your device could not be verified - please try again. If you run a script blocker, enable scripts from this domain and try again.",
     });
   } else if (!donationAmount) {
     res.status(400).json({ error: "Please provide a donation amount" });
