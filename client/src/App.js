@@ -45,7 +45,6 @@ function App() {
           return braintree.dataCollector
             .create({
               client: clientInstance,
-              paypal: true,
             })
             .then(function (dataCollectorInstance) {
               setDeviceData(dataCollectorInstance.deviceData);
@@ -76,7 +75,7 @@ function App() {
           ></input>
         </form>
         <DropIn
-          options={{ authorization: token }}
+          options={{ authorization: token, paypal: { flow: "vault" } }}
           onInstance={(instance) => setDropInInstance(instance)}
         ></DropIn>
         <button onClick={donate}>donate</button>
