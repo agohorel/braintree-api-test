@@ -12,23 +12,26 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/")
-      .then(res => setToken(res.data))
-      .catch(err => console.error(err));
+      .get("https://braintree-test-backend.herokuapp.com/")
+      .then((res) => setToken(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
-  const donate = async e => {
+  const donate = async (e) => {
     e.preventDefault();
     const { nonce } = await dropInInstance.requestPaymentMethod();
-    const res = await axios.post("http://localhost:5000/donate", {
-      nonce,
-      deviceData,
-      donationAmount
-    });
+    const res = await axios.post(
+      "https://braintree-test-backend.herokuapp.com/donate",
+      {
+        nonce,
+        deviceData,
+        donationAmount,
+      }
+    );
     console.log(res);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setDonationAmount(e.target.value);
   };
 
@@ -36,19 +39,19 @@ function App() {
     if (token) {
       braintree.client
         .create({
-          authorization: token
+          authorization: token,
         })
-        .then(function(clientInstance) {
+        .then(function (clientInstance) {
           return braintree.dataCollector
             .create({
               client: clientInstance,
-              paypal: true
+              paypal: true,
             })
-            .then(function(dataCollectorInstance) {
+            .then(function (dataCollectorInstance) {
               setDeviceData(dataCollectorInstance.deviceData);
             });
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.error(err);
         });
     }
@@ -74,7 +77,7 @@ function App() {
         </form>
         <DropIn
           options={{ authorization: token }}
-          onInstance={instance => setDropInInstance(instance)}
+          onInstance={(instance) => setDropInInstance(instance)}
         ></DropIn>
         <button onClick={donate}>donate</button>
       </div>
