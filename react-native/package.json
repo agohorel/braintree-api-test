@@ -9,7 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "braintree-web": "^3.59.0",
     "braintree-web-drop-in": "^1.22.1",
     "expo": "~36.0.0",
